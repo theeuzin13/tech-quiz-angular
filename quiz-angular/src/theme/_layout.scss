@@ -1,0 +1,40 @@
+// Background of HOME & RESULTS PAGE
+.page-gradient {
+  min-height: 100vh;
+  background: linear-gradient(135deg, $bg-start, $bg-end);
+}
+
+// Admin Sidebar
+.sidebar {
+  background: linear-gradient(180deg, $admin-purple, $admin-purple-dark);
+  color: $white;
+  padding: 2rem 1rem;
+  width: 260px;
+  min-height: 100vh;
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: $white;
+    border-radius: $radius;
+    margin-bottom: 0.5rem;
+    transition: $transition;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+  }
+}
+
+// Admin Content Wrapper
+.admin-content {
+  padding: 2rem;
+}

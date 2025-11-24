@@ -1,0 +1,14 @@
+@import 'colors';
+@import 'variables';
+@import 'mixins';
+@import 'buttons';
+@import 'cards';
+@import 'layout';
+
+// Global resets
+body {
+  font-family: $font-text;
+  background: $gray-50;
+  color: $gray-900;
+  margin: 0;
+}

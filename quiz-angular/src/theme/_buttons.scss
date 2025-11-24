@@ -1,0 +1,22 @@
+.btn {
+  @include button-primary;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+
+  &--small {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+  }
+
+  &--outline {
+    background: transparent;
+    border: 2px solid $primary;
+    color: $primary;
+
+    &:hover {
+      background: $primary;
+      color: $white;
+    }
+  }
+}
