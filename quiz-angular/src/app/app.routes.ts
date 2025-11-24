@@ -8,7 +8,14 @@ export const routes: Routes = [
       import('./pages/home/home.component').then(m => m.HomeComponent),
   },
 
-  // ADMIN
+  // LOGIN DO ADMIN (SEM SIDEBAR)
+  {
+    path: 'admin/login',
+    loadComponent: () =>
+      import('./pages/login/login.component').then(m => m.LoginComponent)
+  },
+
+  // ÁREA ADMIN PROTEGIDA PELO LAYOUT
   {
     path: 'admin',
     loadComponent: () =>

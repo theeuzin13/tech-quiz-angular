@@ -1,17 +1,42 @@
-.back-btn {
-  background: transparent;
-  border: none;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  color: #475569;
-  cursor: pointer;
-  font-weight: 500;
+.header {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 1.2rem 2rem;
+
+  .header-title {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+}
+
+.back-btn {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 4px;
+
+  background: transparent;
+  border: none;
+  color: #475569;
+  font-size: 1rem;
+  font-weight: 600;
   text-decoration: none;
+  cursor: pointer;
+  padding: 0.4rem 0.8rem;
+
+  transition: 0.25s ease-in-out;
+
+  i {
+    font-size: 1.1rem;
+    opacity: 0.8;
+  }
 
   &:hover {
     color: #1e293b;
+    transform: translateX(-2px);
   }
 }
