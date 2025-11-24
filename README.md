@@ -1,1 +1,0 @@
-# tech-quiz-angular
