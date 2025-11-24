@@ -48,6 +48,16 @@ export const routes: Routes = [
           import('./features/alternatives/pages/list/list.component').then(
             m => m.ListComponent
           ),
+      },
+      {
+        path: 'quiz/:categoryId',
+        loadComponent: () =>
+          import('./pages/quiz/quiz.component').then(m => m.QuizComponent)
+      },
+      {
+        path: 'quiz/:categoryId/result',
+        loadComponent: () =>
+          import('./pages/result/result.component').then(m => m.ResultComponent)
       }
     ],
   }

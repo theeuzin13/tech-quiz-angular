@@ -1,0 +1,11 @@
+<div class="result-container">
+
+  <h1>Quiz Complete!</h1>
+
+  <div class="result-card">
+    <p class="score-text">Your Score</p>
+    <p class="score">{{ (quiz.score() / quiz.questions().length * 100) | number:'1.0-0' }}%</p>
+
+    <button class="btn" (click)="backHome()">Back to Categories</button>
+  </div>
+</div>

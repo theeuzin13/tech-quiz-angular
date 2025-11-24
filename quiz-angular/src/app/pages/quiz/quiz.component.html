@@ -1,0 +1,23 @@
+<div class="quiz-container" *ngIf="quiz.questions().length">
+
+  <h2 class="quiz-title">
+    Question {{ quiz.currentIndex() + 1 }} / {{ quiz.questions().length }}
+  </h2>
+
+  <div class="card">
+    <p class="question-text">
+      {{ quiz.questions()[quiz.currentIndex()].text }}
+    </p>
+
+    <div class="alternatives">
+      <button
+        class="alt-btn"
+        *ngFor="let alt of quiz.questions()[quiz.currentIndex()].alternatives"
+        (click)="chooseAlternative(alt.correct)">
+
+        {{ alt.text }}
+      </button>
+    </div>
+  </div>
+
+</div>

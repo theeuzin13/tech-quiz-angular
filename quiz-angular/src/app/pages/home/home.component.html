@@ -17,7 +17,7 @@
 
       <div class="card-title">{{ item.name }}</div>
 
-      <button class="btn">Start Quiz</button>
+      <button class="btn" [routerLink]="['/quiz', item.id]">Start Quiz</button>
     </div>
   </div>
 
