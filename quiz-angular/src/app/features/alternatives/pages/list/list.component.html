@@ -1,1 +1,45 @@
-<p>alternatives works!</p>
+<div class="page-header">
+  <h2>Alternatives</h2>
+  <button class="add-btn" (click)="openCreate()">+ Add Alternative</button>
+</div>
+
+<div class="alternatives-card">
+  <table class="alternatives-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Alternative Text</th>
+        <th>Question</th>
+        <th>Correct?</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of alternatives()">
+        <td>{{ item.id }}</td>
+        <td>{{ item.text }}</td>
+        <td>{{ getQuestionText(item.questionId) }}</td>
+
+        <td>
+          <span class="tag yes" *ngIf="item.correct">✔ Yes</span>
+          <span class="tag no" *ngIf="!item.correct">✘ No</span>
+        </td>
+
+        <td>
+          <div class="actions">
+            <i class="fa fa-edit edit" (click)="openEdit(item)"></i>
+            <i class="fa fa-trash delete" (click)="delete(item.id)"></i>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-alternative-modal
+  [visible]="modalVisible()"
+  [data]="editingItem()"
+  (close)="modalVisible.set(false)"
+  (save)="save($event)">
+</app-alternative-modal>

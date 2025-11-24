@@ -1,0 +1,24 @@
+<div class="modal" *ngIf="visible">
+  <div class="modal-content">
+
+    <h2>{{ data ? 'Edit Alternative' : 'New Alternative' }}</h2>
+
+    <label>Alternative Text</label>
+    <input type="text" [(ngModel)]="text" />
+
+    <label>Correct?</label>
+    <select [(ngModel)]="correct">
+      <option [ngValue]="true">Yes</option>
+      <option [ngValue]="false">No</option>
+    </select>
+
+    <label>Question Text</label>
+    <input type="text" [(ngModel)]="questionText">
+
+    <div class="actions">
+      <button class="btn cancel" (click)="close.emit()">Cancel</button>
+      <button class="btn save" (click)="submit()">Save</button>
+    </div>
+
+  </div>
+</div>
