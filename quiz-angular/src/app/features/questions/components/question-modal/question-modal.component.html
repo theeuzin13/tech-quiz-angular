@@ -1,0 +1,20 @@
+<div class="modal-backdrop" *ngIf="visible">
+  <div class="modal-box">
+
+    <h3>{{ data ? 'Edit Question' : 'Add Question' }}</h3>
+
+    <label>Question</label>
+    <input type="text" [(ngModel)]="text">
+
+    <label>Category</label>
+    <select [(ngModel)]="category">
+      <option *ngFor="let c of categories">{{ c }}</option>
+    </select>
+
+    <div class="modal-actions">
+      <button class="cancel" (click)="close.emit()">Cancel</button>
+      <button class="save" (click)="submit()">Save</button>
+    </div>
+
+  </div>
+</div>

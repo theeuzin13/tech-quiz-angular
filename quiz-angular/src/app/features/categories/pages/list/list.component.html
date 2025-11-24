@@ -1,9 +1,6 @@
 <div class="categories-header">
   <h2>Categories</h2>
-
-  <button class="add-btn">
-    + Add Category
-  </button>
+  <button class="add-btn" (click)="openCreate()">+ Add Category</button>
 </div>
 
 <div class="categories-card">
@@ -22,11 +19,21 @@
         <td>{{ item.id }}</td>
         <td>{{ item.name }}</td>
         <td>{{ item.icon }}</td>
-        <td class="actions">
-          <i class="fas fa-edit edit"></i>
-          <i class="fas fa-trash delete"></i>
+        <td>
+          <div class="actions">
+            <i class="fa fa-edit edit" (click)="openEdit(item)"></i>
+            <i class="fa fa-trash delete"></i>
+          </div>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
+
+<!-- MODAL -->
+<app-category-modal
+  [visible]="modalVisible()"
+  [data]="editingItem()"
+  (close)="modalVisible.set(false)"
+  (save)="saveCategory($event)">
+</app-category-modal>

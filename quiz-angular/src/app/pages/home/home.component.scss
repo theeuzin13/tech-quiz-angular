@@ -1,35 +1,114 @@
-.home-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 2rem;
-
-  h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0;
-  }
+/* ===== CONTAINER CENTRAL ===== */
+.home-container {
+  padding: 60px 20px;
+  max-width: 1300px;
+  margin: 0 auto;
 }
 
-.admin-btn {
-  background: linear-gradient(135deg, #7a1fdd, #6111bb);
-  padding: 10px 18px;
-  border-radius: 10px;
-  color: white;
-  font-weight: 600;
-  text-decoration: none;
-  box-shadow: 0 4px 12px rgba(122, 31, 221, 0.3);
-  transition: 0.25s ease;
-
-  &:hover {
-    filter: brightness(1.15);
-    box-shadow: 0 6px 14px rgba(122, 31, 221, 0.4);
-    transform: translateY(-2px);
-  }
+/* ===== TÍTULO ===== */
+.home-title {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
 .home-subtitle {
   text-align: center;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   color: #555;
+  margin-bottom: 50px;
+}
+
+/* ===== GRID (3 CARDS POR LINHA) ===== */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+/* ===== CARD ===== */
+.card {
+  background: white;
+  padding: 35px 25px;
+  border-radius: 18px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* ===== ICONE ===== */
+.card-icon {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #00c4ff, #008cff);
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px;
+  color: white;
+}
+
+/* ===== TÍTULO ===== */
+.card-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* ===== BOTÃO ===== */
+.btn {
+  width: 100%;
+  padding: 12px 0;
+  background: #00b7ff;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #009ad6;
+}
+
+.admin-btn {
+  position: absolute;
+  top: 25px;
+  right: 40px;
+
+  background: linear-gradient(135deg, #7f55ff, #a54bff);
+  color: white;
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: 0.2s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  &:hover {
+    background: linear-gradient(135deg, #6b44e0, #8e39f0);
+    transform: translateY(-2px);
+  }
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 900px) {
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .categories-grid {
+    grid-template-columns: 1fr;
+  }
 }

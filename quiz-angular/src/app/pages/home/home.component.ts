@@ -7,12 +7,17 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+  styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+
   categories = [
-    { name: 'Programming', description: 'All programming related questions' },
-    { name: 'Databases', description: 'SQL, NoSQL, and more' },
-    { name: 'Networking', description: 'Internet, routing, etc.' }
+    { id: 1, name: 'Programming' },
+    { id: 2, name: 'Networks' },
+    { id: 3, name: 'Hardware' },
+    { id: 4, name: 'Artificial Intelligence' },
+    { id: 5, name: 'Security' },
+    { id: 6, name: 'Databases' },
   ];
+
 }

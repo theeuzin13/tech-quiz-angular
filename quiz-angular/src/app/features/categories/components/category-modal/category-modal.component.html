@@ -1,0 +1,22 @@
+<div class="modal-backdrop" *ngIf="visible">
+  <div class="modal">
+    <h2>{{ data ? 'Edit Category' : 'Add Category' }}</h2>
+
+    <label>
+      Name
+      <input type="text" [(ngModel)]="name" />
+    </label>
+
+    <label>
+      Icon
+      <input type="text" [(ngModel)]="icon" />
+    </label>
+
+    <div class="actions">
+      <button class="cancel" (click)="close.emit()">Cancel</button>
+      <button class="confirm" (click)="submit()">
+        {{ data ? 'Save' : 'Create' }}
+      </button>
+    </div>
+  </div>
+</div>

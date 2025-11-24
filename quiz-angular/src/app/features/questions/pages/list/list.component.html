@@ -1,1 +1,39 @@
-<p>list works!</p>
+<div class="page-header">
+  <h2>Questions</h2>
+  <button class="add-btn" (click)="openCreate()">+ Add Question</button>
+</div>
+
+<div class="questions-card">
+  <table class="questions-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Question</th>
+        <th>Category</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let q of questions">
+        <td>{{ q.id }}</td>
+        <td>{{ q.text }}</td>
+        <td>{{ q.category }}</td>
+
+        <td class="actions">
+          <i class="fa fa-edit edit" (click)="openEdit(q)"></i>
+          <i class="fa fa-trash delete"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- MODAL -->
+<app-question-modal
+  [visible]="modalVisible()"
+  [data]="editingItem()"
+  [categories]="categories"
+  (close)="modalVisible.set(false)"
+  (save)="saveQuestion($event)">
+</app-question-modal>

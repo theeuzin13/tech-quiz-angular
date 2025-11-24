@@ -1,20 +1,24 @@
-<div class="page-gradient home-container">
+<div class="home-container">
 
-  <!-- Top bar (Título + botão Admin) -->
-  <div class="home-header">
-    <h1 class="home-title">TechQuiz</h1>
+  <a routerLink="/admin/login" class="admin-btn">
+    Admin Dashboard
+  </a>
 
-    <a routerLink="/admin/login" class="admin-btn">
-      Admin Dashboard
-    </a>
-  </div>
-
-  <!-- Subtítulo -->
+  <!-- HEADER -->
+  <h1 class="home-title">TechQuiz</h1>
   <p class="home-subtitle">Choose a Technology Category</p>
 
-  <!-- GRID de Categorias -->
+  <!-- GRID -->
   <div class="categories-grid">
-    <div class="card">
+    <div class="card" *ngFor="let item of categories">
       <div class="card-icon">
-        <i class="fa fa-code fa-2x text-white"></i>
+        <i class="fa fa-code fa-2x"></i>
       </div>
+
+      <div class="card-title">{{ item.name }}</div>
+
+      <button class="btn">Start Quiz</button>
+    </div>
+  </div>
+
+</div>
