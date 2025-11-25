@@ -17,6 +17,13 @@ export class ResultComponent {
   ) {}
 
   backHome() {
+    this.quiz.reset();
     this.router.navigate(['/']);
+  }
+
+  playAgain() {
+    const categoryId = this.quiz.categoryId();
+    this.quiz.reset();
+    this.router.navigate([`/quiz/${categoryId}`]);
   }
 }
