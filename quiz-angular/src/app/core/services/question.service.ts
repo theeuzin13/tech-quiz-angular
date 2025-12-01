@@ -1,26 +1,41 @@
-import { Injectable, signal } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { map, Observable } from "rxjs";
 
-export interface Question {
-  id: number;
-  text: string;
-  categoryId: number;
-}
-
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class QuestionService {
+  private api = 'http://localhost:3000/questions';
 
-  // MOCK: perguntas
-  private _questions = signal<Question[]>([
-    { id: 1, text: 'What does HTML stand for?', categoryId: 1 },
-    { id: 2, text: 'Which protocol is used for secure web browsing?', categoryId: 2 },
-    { id: 3, text: 'What is the main function of a CPU?', categoryId: 3 },
-    { id: 4, text: 'What type of learning uses labeled data?', categoryId: 4 },
-    { id: 5, text: 'What does SQL stand for?', categoryId: 6 },
-  ]);
+  constructor(private http: HttpClient) {}
 
-  questions = this._questions; // exposto como signal()
+  createQuestion(description: string, categoryId: string): Observable<any> {
+    return this.http.post(this.api, { description, categoryId });
+  }
 
-  getQuestionsByCategory(categoryId: number) {
-    return this._questions().filter(q => q.categoryId === categoryId);
+  getQuestions(): Observable<any[]> {
+    return this.http.get<any[]>(this.api).pipe(
+      map(items =>
+        items.map(q => ({
+          id: q.uuid,
+          description: q.description,
+          categoryId: q.categoryId,
+          category: q.Category
+        }))
+      )
+    );
+  }
+
+  getQuestion(id: string): Observable<any> {
+    return this.http.get(`${this.api}/${id}`);
+  }
+
+  updateQuestion(id: string, description: string, categoryId: string): Observable<any> {
+    return this.http.patch(`${this.api}/${id}`, { description, categoryId });
+  }
+
+  deleteQuestion(id: string): Observable<any> {
+    return this.http.delete(`${this.api}/${id}`);
   }
 }

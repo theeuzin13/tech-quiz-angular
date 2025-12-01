@@ -5,19 +5,23 @@
   </h2>
 
   <div class="card">
+
     <p class="question-text">
-      {{ quiz.questions()[quiz.currentIndex()].text }}
+      {{ quiz.questions()[quiz.currentIndex()].description }}
     </p>
 
     <div class="alternatives">
+
       <button
         class="alt-btn"
         *ngFor="let alt of quiz.questions()[quiz.currentIndex()].alternatives"
-        (click)="chooseAlternative(alt.correct)">
-
+        (click)="chooseAlternative(alt.isCorrect)">
+        
         {{ alt.text }}
       </button>
+
     </div>
+
   </div>
 
 </div>

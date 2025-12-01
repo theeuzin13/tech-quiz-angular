@@ -16,7 +16,7 @@ export class QuizComponent {
     public quiz: QuizService,
     private router: Router
   ) {
-    const id = Number(this.route.snapshot.paramMap.get('categoryId'));
+    const id = this.route.snapshot.paramMap.get('categoryId')!;
     this.quiz.start(id);
   }
 

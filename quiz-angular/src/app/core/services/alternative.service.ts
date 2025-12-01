@@ -1,35 +1,39 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-export interface Alternative {
+interface Alternative {
   id: number;
   text: string;
-  correct: boolean;
+  isCorrect: boolean;
   questionId: number;
 }
 
-@Injectable({ providedIn: 'root' })
-export class AlternativeService {
+@Injectable({
+  providedIn: 'root'
+})
+export class AlternativesService {
+  private api = 'http://localhost:3000/alternatives';
 
-  alternatives = signal<Alternative[]>([
-    { id: 1, text: 'HyperText Markup Language', correct: true, questionId: 1 },
-    { id: 2, text: 'High Tech Modern Language', correct: false, questionId: 1 },
-    { id: 3, text: 'Home Tool Markup Language', correct: false, questionId: 1 },
-    { id: 4, text: 'Hyperlinks and Text Markup Language', correct: false, questionId: 1 },
-    { id: 5, text: 'HTTP', correct: false, questionId: 2 },
-  ]);
+  constructor(private http: HttpClient) {}
 
-  create(data: Omit<Alternative, 'id'>) {
-    const newId = this.alternatives().length + 1;
-    this.alternatives.update(list => [...list, { id: newId, ...data }]);
+  createAlternative(data: Omit<Alternative, 'id'>): Observable<any> {
+    return this.http.post(`${this.api}`, data);
   }
 
-  update(id: number, data: Partial<Alternative>) {
-    this.alternatives.update(list =>
-      list.map(item => item.id === id ? { ...item, ...data } : item)
-    );
+  getAlternatives(): Observable<any> {
+    return this.http.get(`${this.api}`);
   }
 
-  delete(id: number) {
-    this.alternatives.update(list => list.filter(i => i.id !== id));
+  getAlternative(id: string): Observable<any> {
+    return this.http.get(`${this.api}/${id}`);
+  }
+
+  updateAlternative(id: string, data: Partial<Alternative>): Observable<any> {
+    return this.http.put(`${this.api}/${id}`, data);
+  }
+
+  deleteAlternative(id: string): Observable<any> {
+    return this.http.delete(`${this.api}/${id}`);
   }
 }

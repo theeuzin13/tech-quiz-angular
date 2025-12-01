@@ -1,8 +1,9 @@
-import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, signal } from '@angular/core';
+import { AlternativesService } from '../../../../core/services/alternative.service';
+import { QuestionService } from '../../../../core/services/question.service';
 import { AlternativeModalComponent } from '../../components/alternatives-modal/alternative-modal.component';
-import { Alternative, AlternativeService } from '../../../../core/services/alternative.service';
-import { QuestionMock } from '../../../../core/mocks/question.mock';
+import { Alternative } from '../../../../core/models/alternative.model';
 
 @Component({
   standalone: true,
@@ -13,14 +14,30 @@ import { QuestionMock } from '../../../../core/mocks/question.mock';
 export class ListComponent {
 
   alternatives = signal<Alternative[]>([]);
-
-  questions = QuestionMock;
+  questions = signal<any[]>([]);
 
   modalVisible = signal(false);
   editingItem = signal<Alternative | null>(null);
 
-  constructor(private service: AlternativeService) {
-    this.alternatives = this.service.alternatives;
+  constructor(
+    private service: AlternativesService,
+    private questionService: QuestionService
+  ) {
+
+    this.service.getAlternatives().subscribe(data => {
+      this.alternatives.set(
+        data.map((alt: any) => ({
+          id: alt.id,
+          text: alt.text,
+          isCorrect: alt.isCorrect,
+          questionId: alt.questionId ?? alt.question_id ?? alt.questionUuid,
+        }))
+      );
+    });
+
+    this.questionService.getQuestions().subscribe((data) => {
+      this.questions.set(data);
+    });
   }
 
   openCreate() {
@@ -35,20 +52,20 @@ export class ListComponent {
 
   save(data: any) {
     if (this.editingItem()) {
-      this.service.update(this.editingItem()!.id, data);
+      this.service.updateAlternative(this.editingItem()!.id, data);
     } else {
-      this.service.create(data);
+      this.service.createAlternative(data);
     }
 
     this.modalVisible.set(false);
   }
 
-  delete(id: number) {
-    this.service.delete(id);
+  delete(id: string) {
+    this.service.deleteAlternative(id);
   }
 
-  getQuestionText(id: number): string {
-  const q = this.questions.find(q => q.id === id);
-  return q ? q.text : '';
-}
+  getQuestionText(id: string): string {
+    const q = this.questions().find((q: any) => q.id === id);
+    return q ? q.text : '';
+  }
 }

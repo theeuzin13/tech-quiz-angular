@@ -22,9 +22,10 @@
         <td>{{ getQuestionText(item.questionId) }}</td>
 
         <td>
-          <span class="tag yes" *ngIf="item.correct">✔ Yes</span>
-          <span class="tag no" *ngIf="!item.correct">✘ No</span>
+          <span class="tag yes" *ngIf="item.isCorrect">✔ Yes</span>
+          <span class="tag no" *ngIf="!item.isCorrect">✘ No</span>
         </td>
+
 
         <td>
           <div class="actions">
@@ -37,9 +38,6 @@
   </table>
 </div>
 
-<app-alternative-modal
-  [visible]="modalVisible()"
-  [data]="editingItem()"
-  (close)="modalVisible.set(false)"
+<app-alternative-modal [visible]="modalVisible()" [data]="editingItem()" (close)="modalVisible.set(false)"
   (save)="save($event)">
 </app-alternative-modal>

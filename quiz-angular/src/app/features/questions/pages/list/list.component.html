@@ -8,32 +8,31 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>Question</th>
+        <th>Description</th>
         <th>Category</th>
         <th>Actions</th>
       </tr>
     </thead>
 
     <tbody>
-      <tr *ngFor="let q of questions">
-        <td>{{ q.id }}</td>
-        <td>{{ q.text }}</td>
-        <td>{{ q.category }}</td>
+      <tr *ngFor="let item of questions()">
+        <td>{{ item.id }}</td>
+        <td>{{ item.description }}</td>
+        <td>{{ item.category?.name }}</td>
 
-        <td class="actions">
-          <i class="fa fa-edit edit" (click)="openEdit(q)"></i>
-          <i class="fa fa-trash delete"></i>
+        <td>
+          <i class="fa fa-edit edit" (click)="openEdit(item)"></i>
+          <i class="fa fa-trash delete" (click)="delete(item.id)"></i>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<!-- MODAL -->
 <app-question-modal
   [visible]="modalVisible()"
   [data]="editingItem()"
-  [categories]="categories"
-  (close)="modalVisible.set(false)"
-  (save)="saveQuestion($event)">
+  [categories]="categories()"
+  (save)="save($event)"
+  (close)="modalVisible.set(false)">
 </app-question-modal>

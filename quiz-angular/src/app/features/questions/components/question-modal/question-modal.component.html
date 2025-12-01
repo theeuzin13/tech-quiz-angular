@@ -3,12 +3,14 @@
 
     <h3>{{ data ? 'Edit Question' : 'Add Question' }}</h3>
 
-    <label>Question</label>
-    <input type="text" [(ngModel)]="text">
+    <label>Description</label>
+    <input type="text" [(ngModel)]="description">
 
     <label>Category</label>
-    <select [(ngModel)]="category">
-      <option *ngFor="let c of categories">{{ c }}</option>
+    <select [(ngModel)]="categoryId">
+      <option *ngFor="let c of categories" [value]="c.id">
+        {{ c.name }}
+      </option>
     </select>
 
     <div class="modal-actions">

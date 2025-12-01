@@ -1,23 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { CategoriesService } from '../../core/services/category.service';
+import { Category } from '../../core/models/category.model';
 
 @Component({
-  selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrls: ['./home.component.scss'],
+  imports: [CommonModule, RouterModule],
 })
 export class HomeComponent {
+  categories = signal<Category[]>([]);
 
-  categories = [
-    { id: 1, name: 'Programming' },
-    { id: 2, name: 'Networks' },
-    { id: 3, name: 'Hardware' },
-    { id: 4, name: 'Artificial Intelligence' },
-    { id: 5, name: 'Security' },
-    { id: 6, name: 'Databases' },
-  ];
-
+  constructor(private categoryService: CategoriesService) {
+    this.categoryService.getCategories().subscribe(cats => {
+      this.categories.set(cats);
+    });
+  }
 }

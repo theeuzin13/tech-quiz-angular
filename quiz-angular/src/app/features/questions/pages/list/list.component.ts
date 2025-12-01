@@ -1,35 +1,55 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QuestionModalComponent } from '../../components/question-modal/question-modal.component';
+import { QuestionService } from '../../../../core/services/question.service';
+import { CategoriesService } from '../../../../core/services/category.service';
 
 @Component({
   selector: 'app-questions-list',
   standalone: true,
   imports: [CommonModule, QuestionModalComponent],
   templateUrl: './list.component.html',
-  styleUrl: './list.component.scss'
+  styleUrls: ['./list.component.scss']
 })
 export class ListComponent {
 
-  questions = [
-    { id: 1, text: 'What does HTML stand for?', category: 'Programming' },
-    { id: 2, text: 'Which protocol is used for secure web browsing?', category: 'Networks' },
-    { id: 3, text: 'What is the main function of a CPU?', category: 'Hardware' },
-    { id: 4, text: 'What type of learning uses labeled data?', category: 'Artificial Intelligence' },
-    { id: 5, text: 'What does SQL stand for?', category: 'Databases' },
-  ];
-
-  categories = [
-    'Programming',
-    'Networks',
-    'Hardware',
-    'Artificial Intelligence',
-    'Security',
-    'Databases'
-  ];
+  questions = signal<any[]>([]);
+  categories = signal<any[]>([]);
 
   modalVisible = signal(false);
   editingItem = signal<any | null>(null);
+
+  constructor(
+    private questionService: QuestionService,
+    private categoryService: CategoriesService
+  ) {
+    this.loadQuestions();
+    this.loadCategories();
+  }
+
+  loadQuestions() {
+    this.questionService.getQuestions().subscribe((data) => {
+      const formatted = data.map(q => ({
+        id: q.uuid,
+        description: q.description,
+        categoryId: q.categoryId,
+        category: q.category
+      }));
+
+      this.questions.set(formatted);
+    });
+  }
+
+  loadCategories() {
+    this.categoryService.getCategories().subscribe((data) => {
+      const formatted = data.map(c => ({
+        id: c.id,
+        name: c.name
+      }));
+
+      this.categories.set(formatted);
+    });
+  }
 
   openCreate() {
     this.editingItem.set(null);
@@ -41,19 +61,31 @@ export class ListComponent {
     this.modalVisible.set(true);
   }
 
-  saveQuestion(data: any) {
+  save(data: any) {
     if (data.id) {
-      // edição
-      const idx = this.questions.findIndex(q => q.id === data.id);
-      this.questions[idx] = data;
+      this.questionService.updateQuestion(
+        data.id,
+        data.description,
+        data.categoryId
+      ).subscribe(() => {
+        this.loadQuestions();
+        this.modalVisible.set(false);
+      });
+
     } else {
-      // criação
-      this.questions.push({
-        ...data,
-        id: this.questions.length + 1
+      this.questionService.createQuestion(
+        data.description,
+        data.categoryId
+      ).subscribe(() => {
+        this.loadQuestions();
+        this.modalVisible.set(false);
       });
     }
+  }
 
-    this.modalVisible.set(false);
+  delete(id: string) {
+    this.questionService.deleteQuestion(id).subscribe(() => {
+      this.loadQuestions();
+    });
   }
 }
