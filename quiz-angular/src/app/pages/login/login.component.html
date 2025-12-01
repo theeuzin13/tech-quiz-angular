@@ -4,7 +4,7 @@
     <h1 class="title">TechQuiz Admin</h1>
     <p class="subtitle">Login to manage categories, questions and alternatives</p>
 
-    <form (ngSubmit)="login()">
+    <form (submit)="login($event)">
 
       <label>Username</label>
       <input type="text" [(ngModel)]="username" name="username" required />
@@ -12,7 +12,7 @@
       <label>Password</label>
       <input type="password" [(ngModel)]="password" name="password" required />
 
-      <button class="btn-login" type="submit">Login</button>
+      <button class="btn-login" type="submit" [disabled]="loading">{{ loading ? 'Logging in...' : 'Login' }}</button>
 
     </form>
   </div>
