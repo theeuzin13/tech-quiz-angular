@@ -61,12 +61,18 @@
 
 .actions {
   display: flex;
-  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
 
   i {
+    font-size: 1.2rem;
     cursor: pointer;
-    font-size: 1rem;
-    transition: 0.2s;
+    transition: 0.2s ease;
+  }
+
+  .edit {
+    color: #475569;
   }
 
   .edit:hover {
@@ -75,9 +81,9 @@
 
   .delete {
     color: #dc2626;
+  }
 
-    &:hover {
-      color: #b91c1c;
-    }
+  .delete:hover {
+    color: #b91c1c;
   }
 }

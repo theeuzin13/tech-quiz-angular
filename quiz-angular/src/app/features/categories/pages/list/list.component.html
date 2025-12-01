@@ -15,14 +15,14 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let item of categories">
+      <tr *ngFor="let item of categories()">
         <td>{{ item.id }}</td>
         <td>{{ item.name }}</td>
         <td>{{ item.icon }}</td>
         <td>
           <div class="actions">
             <i class="fa fa-edit edit" (click)="openEdit(item)"></i>
-            <i class="fa fa-trash delete"></i>
+            <i class="fa fa-trash delete" (click)="deleteCategory(item.id)"></i>
           </div>
         </td>
       </tr>

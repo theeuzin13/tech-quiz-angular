@@ -1,24 +1,31 @@
 import { Component, signal } from '@angular/core';
-import { CategoryModalComponent } from '../../components/category-modal/category-modal.component';
 import { NgFor } from '@angular/common';
+import { CategoryModalComponent } from '../../components/category-modal/category-modal.component';
+import { CategoriesService } from '../../../../core/services/category.service';
 
 @Component({
   standalone: true,
   selector: 'app-category-list',
   imports: [NgFor, CategoryModalComponent],
   templateUrl: './list.component.html',
-  styleUrl: './list.component.scss'
+  styleUrls: ['./list.component.scss']
 })
 export class ListComponent {
 
   modalVisible = signal(false);
   editingItem = signal<any | null>(null);
 
-  categories = [
-    { id: 1, name: 'Programming', icon: 'Code' },
-    { id: 2, name: 'Networks', icon: 'Network' },
-    { id: 3, name: 'Hardware', icon: 'Cpu' },
-  ];
+  categories = signal<any[]>([]);
+
+  constructor(private categoryService: CategoriesService) {
+    this.loadCategories();
+  }
+
+  loadCategories() {
+    this.categoryService.getCategories().subscribe(res => {
+      this.categories.set(res);
+    });
+  }
 
   openCreate() {
     this.editingItem.set(null);
@@ -32,14 +39,22 @@ export class ListComponent {
 
   saveCategory(data: any) {
     if (data.id) {
-      const index = this.categories.findIndex(c => c.id === data.id);
-      this.categories[index] = data;
+      this.categoryService.updateCategory(data.id, data.name).subscribe(() => {
+        this.loadCategories();
+        this.modalVisible.set(false);
+      });
+
     } else {
-      this.categories.push({
-        id: this.categories.length + 1,
-        ...data
+      this.categoryService.createCategory(data.name).subscribe(() => {
+        this.loadCategories();
+        this.modalVisible.set(false);
       });
     }
-    this.modalVisible.set(false);
+  }
+
+  deleteCategory(id: string) {
+    this.categoryService.deleteCategory(id).subscribe(() => {
+      this.loadCategories();
+    });
   }
 }

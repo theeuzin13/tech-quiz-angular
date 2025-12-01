@@ -21,8 +21,10 @@
         <td>{{ item.category?.name }}</td>
 
         <td>
-          <i class="fa fa-edit edit" (click)="openEdit(item)"></i>
-          <i class="fa fa-trash delete" (click)="delete(item.id)"></i>
+          <div class="actions">
+            <i class="fa fa-edit edit" (click)="openEdit(item)"></i>
+            <i class="fa fa-trash delete" (click)="delete(item.id)"></i>
+          </div>
         </td>
       </tr>
     </tbody>
