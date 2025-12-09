@@ -1,0 +1,12 @@
+services:
+  angular:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tech_quiz_front
+    ports:
+      - "4200:4200"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: always
