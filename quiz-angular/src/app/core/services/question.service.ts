@@ -21,7 +21,7 @@ export class QuestionService {
           id: q.uuid,
           description: q.description,
           categoryId: q.categoryId,
-          category: q.Category
+          categoryName: q.categoryName
         }))
       )
     );

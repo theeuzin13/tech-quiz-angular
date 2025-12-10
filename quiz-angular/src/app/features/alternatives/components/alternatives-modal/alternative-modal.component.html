@@ -1,23 +1,29 @@
-<div class="modal" *ngIf="visible">
-  <div class="modal-content">
+<div class="modal-backdrop" *ngIf="visible">
+  <div class="modal-container">
 
     <h2>{{ data ? 'Edit Alternative' : 'New Alternative' }}</h2>
 
-    <label>Alternative Text</label>
-    <input type="text" [(ngModel)]="text" />
+    <div class="modal-body">
+      <label>Alternative Text</label>
+      <input [(ngModel)]="form.text" class="input" />
 
-    <label>Correct?</label>
-    <select [(ngModel)]="correct">
-      <option [ngValue]="true">Yes</option>
-      <option [ngValue]="false">No</option>
-    </select>
+      <label>Correct?</label>
+      <select [(ngModel)]="form.isCorrect" class="input">
+        <option [ngValue]="true">Yes</option>
+        <option [ngValue]="false">No</option>
+      </select>
 
-    <label>Question Text</label>
-    <input type="text" [(ngModel)]="questionText">
+      <label>Question</label>
+      <select [(ngModel)]="form.questionId" class="input">
+        <option *ngFor="let q of questions" [value]="q.id">
+          {{ q.description }}
+        </option>
+      </select>
+    </div>
 
-    <div class="actions">
-      <button class="btn cancel" (click)="close.emit()">Cancel</button>
-      <button class="btn save" (click)="submit()">Save</button>
+    <div class="modal-footer">
+      <button class="cancel" (click)="onClose()">Cancel</button>
+      <button class="save" (click)="submit()">Save</button>
     </div>
 
   </div>

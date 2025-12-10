@@ -18,12 +18,12 @@
       <tr *ngFor="let item of questions()">
         <td>{{ item.id }}</td>
         <td>{{ item.description }}</td>
-        <td>{{ item.category?.name }}</td>
+        <td>{{ item.categoryName }}</td>
 
         <td>
           <div class="actions">
             <i class="fa fa-edit edit" (click)="openEdit(item)"></i>
-            <i class="fa fa-trash delete" (click)="delete(item.id)"></i>
+            <i class="fa fa-trash delete" (click)="deleteQuestion(item.id)"></i>
           </div>
         </td>
       </tr>

@@ -18,13 +18,23 @@ export class QuizComponent {
   ) {
     const id = this.route.snapshot.paramMap.get('categoryId')!;
     this.quiz.start(id);
+
+    const questions = this.quiz.questions();
+
+    if (!questions || questions.length === 0) {
+      this.router.navigate(['/quiz-empty']);
+    }
   }
 
   chooseAlternative(correct: boolean) {
     this.quiz.answer(correct);
 
     if (this.quiz.currentIndex() >= this.quiz.questions().length) {
-      this.router.navigate(['/quiz', this.route.snapshot.paramMap.get('categoryId'), 'result']);
+      this.router.navigate([
+        '/quiz',
+        this.route.snapshot.paramMap.get('categoryId'),
+        'result'
+      ]);
     }
   }
 }

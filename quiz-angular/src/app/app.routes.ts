@@ -63,6 +63,13 @@ export const routes: Routes = [
       import('./pages/result/result.component').then(m => m.ResultComponent)
   },
   {
+    path: 'quiz-empty',
+    loadComponent: () =>
+      import('./pages/quiz-empty/quiz-empty.component').then(
+        m => m.QuizEmptyComponent
+      )
+  },
+  {
     path: '**',
     redirectTo: '',
   }

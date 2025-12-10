@@ -1,43 +1,48 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
   selector: 'app-alternative-modal',
-  imports: [CommonModule, FormsModule],
   templateUrl: './alternative-modal.component.html',
-  styleUrls: ['./alternative-modal.component.scss']
+  styleUrls: ['./alternative-modal.component.scss'],
+  imports: [CommonModule, FormsModule]
 })
 export class AlternativeModalComponent {
 
   @Input() visible = false;
   @Input() data: any = null;
+  @Input() questions: any[] = [];
 
-  @Output() close = new EventEmitter();
-  @Output() save = new EventEmitter();
+  @Output() close = new EventEmitter<void>();
+  @Output() save = new EventEmitter<any>();
 
-  text = '';
-  correct = false;
-  questionText = '';
+  form = {
+    text: '',
+    isCorrect: false,
+    questionId: ''
+  };
 
-  ngOnChanges() {
-    if (this.data) {
-      this.text = this.data.text;
-      this.correct = this.data.correct;
-      this.questionText = this.data.questionText;
-    } else {
-      this.text = '';
-      this.correct = false;
-      this.questionText = '';
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['data'] && this.data) {
+      this.form = {
+        text: this.data.text,
+        isCorrect: this.data.isCorrect,
+        questionId: this.data.questionId
+      };
+    }
+
+    if (changes['visible'] && !this.visible) {
+      this.form = { text: '', isCorrect: false, questionId: '' };
     }
   }
 
   submit() {
-    this.save.emit({
-      text: this.text,
-      correct: this.correct,
-      questionText: this.questionText
-    });
+    this.save.emit(this.form);
+  }
+
+  onClose() {
+    this.close.emit();
   }
 }

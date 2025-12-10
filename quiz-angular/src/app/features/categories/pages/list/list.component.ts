@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { NgFor } from '@angular/common';
 import { CategoryModalComponent } from '../../components/category-modal/category-modal.component';
 import { CategoriesService } from '../../../../core/services/category.service';
+import { AlertService } from '../../../../shared/utils/alert.service';
 
 @Component({
   standalone: true,
@@ -17,7 +18,7 @@ export class ListComponent {
 
   categories = signal<any[]>([]);
 
-  constructor(private categoryService: CategoriesService) {
+  constructor(private categoryService: CategoriesService, private alert: AlertService) {
     this.loadCategories();
   }
 
@@ -53,8 +54,20 @@ export class ListComponent {
   }
 
   deleteCategory(id: string) {
-    this.categoryService.deleteCategory(id).subscribe(() => {
-      this.loadCategories();
-    });
+
+    this.alert.confirm('Deseja realmente excluir esta categoria?')
+      .then(result => {
+        if (!result.isConfirmed) return;
+
+        this.categoryService.deleteCategory(id).subscribe({
+          next: () => {
+            this.loadCategories();
+            this.alert.success('Categoria excluída com sucesso!');
+          },
+          error: (err) => {
+            this.alert.error(err.error.message || 'Erro ao excluir categoria.');
+          }
+        });
+      });
   }
 }

@@ -38,6 +38,10 @@
   </table>
 </div>
 
-<app-alternative-modal [visible]="modalVisible()" [data]="editingItem()" (close)="modalVisible.set(false)"
-  (save)="save($event)">
-</app-alternative-modal>
+<app-alternative-modal
+  [visible]="modalVisible()"
+  [data]="editingItem()"
+  [questions]="questions()"
+  (close)="modalVisible.set(false)"
+  (save)="save($event)"
+></app-alternative-modal>

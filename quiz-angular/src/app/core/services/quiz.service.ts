@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { AlternativesService } from './alternative.service';
 import { QuestionService } from './question.service';
 
@@ -11,29 +12,39 @@ export class QuizService {
 
   private _categoryId = '';
   private _categoryName = '';
-
   constructor(
     private questionService: QuestionService,
-    private alternativeService: AlternativesService
+    private alternativeService: AlternativesService,
+    private router: Router
   ) {}
 
   /** Iniciar quiz */
   start(categoryId: string) {
     this._categoryId = categoryId;
 
-    // 1. PEGAR APENAS AS QUESTÕES DA CATEGORIA
-    this.questionService.getQuestions().subscribe(questions => {
-
-      // questions vem com uuid
+    this.questionService.getQuestions().subscribe((questions: any[]) => {
+      
       const filteredQuestions = questions.filter((q: any) => q.categoryId === categoryId);
 
-      // 2. PEGAR ALTERNATIVAS
-      this.alternativeService.getAlternatives().subscribe(alternatives => {
+      if (filteredQuestions.length === 0) {
+        this.router.navigate(['/quiz-empty']);
+        return;
+      }
 
+      this.alternativeService.getAlternatives().subscribe(alternatives => {
+        
         const withAlternatives = filteredQuestions.map((q: any) => ({
           ...q,
           alternatives: alternatives.filter((a: any) => a.questionId === q.id)
         }));
+
+        // ❗ Se qualquer questão não tiver alternativas, envia para quiz-empty
+        const hasNoAlternatives = withAlternatives.some(q => q.alternatives.length === 0);
+
+        if (hasNoAlternatives) {
+          this.router.navigate(['/quiz-empty']);
+          return;
+        }
 
         this.questions.set(withAlternatives);
         this.currentIndex.set(0);

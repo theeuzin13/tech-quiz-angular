@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { QuestionModalComponent } from '../../components/question-modal/question-modal.component';
 import { QuestionService } from '../../../../core/services/question.service';
 import { CategoriesService } from '../../../../core/services/category.service';
+import { AlertService } from '../../../../shared/utils/alert.service';
 
 @Component({
   selector: 'app-questions-list',
@@ -21,7 +22,8 @@ export class ListComponent {
 
   constructor(
     private questionService: QuestionService,
-    private categoryService: CategoriesService
+    private categoryService: CategoriesService,
+    private alert: AlertService
   ) {
     this.loadQuestions();
     this.loadCategories();
@@ -29,11 +31,12 @@ export class ListComponent {
 
   loadQuestions() {
     this.questionService.getQuestions().subscribe((data) => {
+      console.log('Fetched questions:', data);
       const formatted = data.map(q => ({
-        id: q.uuid,
+        id: q.id,
         description: q.description,
         categoryId: q.categoryId,
-        category: q.category
+        categoryName: q.categoryName
       }));
 
       this.questions.set(formatted);
@@ -83,9 +86,21 @@ export class ListComponent {
     }
   }
 
-  delete(id: string) {
-    this.questionService.deleteQuestion(id).subscribe(() => {
-      this.loadQuestions();
-    });
+  deleteQuestion(id: string) {
+    this.alert.confirm('Deseja realmente excluir esta pergunta?')
+      .then(result => {
+        if (!result.isConfirmed) return;
+        console.log('Deleting question with id:', id);
+        this.questionService.deleteQuestion(id).subscribe({
+          next: () => {
+            this.loadQuestions();
+            this.alert.success('Pergunta excluída com sucesso!');
+          },
+          error: (err) => {
+            console.log(err);
+            this.alert.error(err.error.message || 'Erro ao excluir pergunta.');
+          }
+        });
+      });
   }
 }

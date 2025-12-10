@@ -3,7 +3,7 @@ import { Component, signal } from '@angular/core';
 import { AlternativesService } from '../../../../core/services/alternative.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import { AlternativeModalComponent } from '../../components/alternatives-modal/alternative-modal.component';
-import { Alternative } from '../../../../core/models/alternative.model';
+import { AlertService } from '../../../../shared/utils/alert.service';  // se estiver usando SweetAlert
 
 @Component({
   standalone: true,
@@ -13,29 +13,37 @@ import { Alternative } from '../../../../core/models/alternative.model';
 })
 export class ListComponent {
 
-  alternatives = signal<Alternative[]>([]);
+  alternatives = signal<any[]>([]);
   questions = signal<any[]>([]);
 
   modalVisible = signal(false);
-  editingItem = signal<Alternative | null>(null);
+  editingItem = signal<any | null>(null);
 
   constructor(
     private service: AlternativesService,
-    private questionService: QuestionService
+    private questionService: QuestionService,
+    private alert: AlertService
   ) {
+    this.loadAlternatives();
+    this.loadQuestions();
+  }
 
+  loadAlternatives() {
     this.service.getAlternatives().subscribe(data => {
+      console.log('Fetched alternatives:', data);
       this.alternatives.set(
         data.map((alt: any) => ({
-          id: alt.id,
+          id: alt.uuid,
           text: alt.text,
           isCorrect: alt.isCorrect,
-          questionId: alt.questionId ?? alt.question_id ?? alt.questionUuid,
+          questionId: alt.questionId,
         }))
       );
     });
+  }
 
-    this.questionService.getQuestions().subscribe((data) => {
+  loadQuestions() {
+    this.questionService.getQuestions().subscribe(data => {
       this.questions.set(data);
     });
   }
@@ -45,27 +53,64 @@ export class ListComponent {
     this.modalVisible.set(true);
   }
 
-  openEdit(item: Alternative) {
+  openEdit(item: any) {
     this.editingItem.set(item);
     this.modalVisible.set(true);
   }
 
   save(data: any) {
+    console.log('Saving alternative:', data);
+    const payload = {
+      id : data.id,
+      text: data.text,
+      isCorrect: data.isCorrect,
+      questionId: data.questionId
+    };
+
     if (this.editingItem()) {
-      this.service.updateAlternative(this.editingItem()!.id, data);
-    } else {
-      this.service.createAlternative(data);
+      const id = this.editingItem()!.id;
+
+      this.service.updateAlternative(id, payload).subscribe({
+        next: () => {
+          this.alert.success("Alternative updated!");
+          this.modalVisible.set(false);
+          this.loadAlternatives();
+        },
+        error: () => {
+          this.alert.error("Failed to update alternative");
+        }
+      });
+
+      return;
     }
 
-    this.modalVisible.set(false);
+    this.service.createAlternative(payload).subscribe({
+      next: () => {
+        this.alert.success("Alternative created!");
+        this.modalVisible.set(false);
+        this.loadAlternatives();
+      },
+      error: () => {
+        this.alert.error("Failed to create alternative");
+      }
+    });
   }
 
   delete(id: string) {
-    this.service.deleteAlternative(id);
+    this.alert.confirm("Delete this alternative?").then(res => {
+      if (!res.isConfirmed) return;
+
+      this.service.deleteAlternative(id).subscribe({
+        next: () => {
+          this.alert.success("Alternative deleted!");
+          this.loadAlternatives();
+        }
+      });
+    });
   }
 
   getQuestionText(id: string): string {
-    const q = this.questions().find((q: any) => q.id === id);
-    return q ? q.text : '';
+    const q = this.questions().find(q => q.id === id);
+    return q ? q.description : '--';
   }
 }
