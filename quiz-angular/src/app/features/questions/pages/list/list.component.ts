@@ -46,7 +46,7 @@ export class ListComponent {
   loadCategories() {
     this.categoryService.getCategories().subscribe((data) => {
       const formatted = data.map(c => ({
-        id: c.id,
+        id: c.uuid,
         name: c.name
       }));
 

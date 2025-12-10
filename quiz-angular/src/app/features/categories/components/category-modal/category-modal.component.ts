@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { iconList } from '../../../../shared/utils/category-icons';
 
 @Component({
   selector: 'app-category-modal',
@@ -15,21 +16,30 @@ export class CategoryModalComponent {
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<any>();
 
-  name = '';
-  icon = '';
+  form: any = {
+    name: '',
+    icon: ''
+  };
+
+  icons = iconList;
 
   ngOnChanges() {
     if (this.data) {
-      this.name = this.data.name;
-      this.icon = this.data.icon;
+      this.form = {
+        uuid: this.data.uuid,
+        name: this.data.name,
+        icon: this.data.icon
+      };
+    } else {
+      this.form = {
+        uuid: null,
+        name: '',
+        icon: 'fa-solid fa-code'
+      };
     }
   }
 
   submit() {
-    this.save.emit({
-      id: this.data?.id,
-      name: this.name,
-      icon: this.icon,
-    });
+    this.save.emit(this.form);
   }
 }

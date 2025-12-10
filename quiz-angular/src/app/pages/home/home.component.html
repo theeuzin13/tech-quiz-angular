@@ -4,15 +4,14 @@
     Admin Dashboard
   </a>
 
-  <!-- HEADER -->
   <h1 class="home-title">TechQuiz</h1>
   <p class="home-subtitle">Choose a Technology Category</p>
 
-  <!-- GRID -->
   <div class="categories-grid">
     <div class="card" *ngFor="let item of categories()">
+
       <div class="card-icon">
-        <i class="fa fa-code fa-2x"></i>
+        <i [class]="item.icon + ' fa-2x'"></i>
       </div>
 
       <div class="card-title">{{ item.name }}</div>

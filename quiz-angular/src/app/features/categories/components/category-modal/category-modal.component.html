@@ -4,13 +4,21 @@
 
     <label>
       Name
-      <input type="text" [(ngModel)]="name" />
+      <input type="text" [(ngModel)]="form.name" class="input" />
     </label>
 
     <label>
       Icon
-      <input type="text" [(ngModel)]="icon" />
+      <select [(ngModel)]="form.icon" class="select">
+        <option *ngFor="let item of icons" [value]="item.icon">
+          {{ item.key }}
+        </option>
+      </select>
     </label>
+
+    <div class="icon-preview">
+      <i [class]="form.icon + ' fa-2x'"></i>
+    </div>
 
     <div class="actions">
       <button class="cancel" (click)="close.emit()">Cancel</button>

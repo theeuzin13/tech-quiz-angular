@@ -23,8 +23,14 @@ export class ListComponent {
   }
 
   loadCategories() {
-    this.categoryService.getCategories().subscribe(res => {
-      this.categories.set(res);
+    this.categoryService.getCategories().subscribe(cats => {
+      this.categories.set(
+        cats.map(c => ({
+          uuid: c.uuid,
+          name: c.name,
+          icon: c.icon
+        }))
+      );
     });
   }
 
@@ -39,14 +45,14 @@ export class ListComponent {
   }
 
   saveCategory(data: any) {
-    if (data.id) {
-      this.categoryService.updateCategory(data.id, data.name).subscribe(() => {
+    if (data.uuid) {
+      this.categoryService.updateCategory(data.uuid, data.name, data.icon).subscribe(() => {
         this.loadCategories();
         this.modalVisible.set(false);
       });
 
     } else {
-      this.categoryService.createCategory(data.name).subscribe(() => {
+      this.categoryService.createCategory(data.name, data.icon).subscribe(() => {
         this.loadCategories();
         this.modalVisible.set(false);
       });

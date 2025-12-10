@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Category } from '../models/category.model';
+import { iconList } from '../../shared/utils/category-icons';
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +13,17 @@ export class CategoriesService {
 
   constructor(private http: HttpClient) {}
 
-  createCategory(name: string): Observable<any> {
-    return this.http.post(`${this.api}`, { name });
+  createCategory(name: string, iconName: string): Observable<any> {
+    return this.http.post(this.api, { name, icon: iconName });
   }
+
   getCategories(): Observable<Category[]> {
     return this.http.get<any[]>(this.api).pipe(
       map((items: any[]) =>
         items.map(item => ({
-          id: item.uuid,
+          uuid: item.uuid,
           name: item.name,
+          icon: item.icon
         })),
       ),
     );
@@ -30,9 +33,11 @@ export class CategoriesService {
     return this.http.get(`${this.api}/${id}`);
   }
 
-  updateCategory(id: string, name: string): Observable<any> {
-    return this.http.put(`${this.api}/${id}`, { name });
+  updateCategory(id: string, name: string, icon: string): Observable<any> {
+
+    return this.http.put(`${this.api}/${id}`, { name, icon });
   }
+
 
   deleteCategory(id: string): Observable<any> {
     return this.http.delete(`${this.api}/${id}`);
