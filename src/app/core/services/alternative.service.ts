@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment.prod';
 
 interface Alternative {
   id: number;
@@ -13,7 +14,7 @@ interface Alternative {
   providedIn: 'root'
 })
 export class AlternativesService {
-  private api = 'http://localhost:3000/alternatives';
+  private api = `${environment.apiUrl}/alternatives`;
 
   constructor(private http: HttpClient) {}
 

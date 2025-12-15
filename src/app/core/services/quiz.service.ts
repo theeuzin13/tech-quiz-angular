@@ -18,7 +18,6 @@ export class QuizService {
     private router: Router
   ) {}
 
-  /** Iniciar quiz */
   start(categoryId: string) {
     this._categoryId = categoryId;
 
@@ -38,7 +37,6 @@ export class QuizService {
           alternatives: alternatives.filter((a: any) => a.questionId === q.id)
         }));
 
-        // ❗ Se qualquer questão não tiver alternativas, envia para quiz-empty
         const hasNoAlternatives = withAlternatives.some(q => q.alternatives.length === 0);
 
         if (hasNoAlternatives) {
@@ -53,7 +51,6 @@ export class QuizService {
     });
   }
 
-  /** Getters */
   categoryId() {
     return this._categoryId;
   }
@@ -62,7 +59,6 @@ export class QuizService {
     return this._categoryName;
   }
 
-  /** Total de certas */
   correct() {
     return this.score();
   }
