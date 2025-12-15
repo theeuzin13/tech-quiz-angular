@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.techquiz.agendfy.shop'
+  apiUrl: 'https://api.quiz.agendfy.shop'
 };
