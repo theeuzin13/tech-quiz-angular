@@ -59,13 +59,13 @@ export class ListComponent {
     }
   }
 
-  deleteCategory(id: string) {
+  deleteCategory(uuid: string) {
 
     this.alert.confirm('Deseja realmente excluir esta categoria?')
       .then(result => {
         if (!result.isConfirmed) return;
 
-        this.categoryService.deleteCategory(id).subscribe({
+        this.categoryService.deleteCategory(uuid).subscribe({
           next: () => {
             this.loadCategories();
             this.alert.success('Categoria excluída com sucesso!');
