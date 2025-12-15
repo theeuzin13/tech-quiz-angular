@@ -71,7 +71,7 @@
             "host": "0.0.0.0",
             "port": 4200,
             "allowedHosts":[
-              "techquiz.agendfy.shop"
+              "engsoft.agendfy.shop"
             ]
           },
           "configurations": {
