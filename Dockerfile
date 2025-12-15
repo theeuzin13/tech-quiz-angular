@@ -1,14 +1,19 @@
-FROM node:20
+# Etapa 1 — build
+FROM node:20 AS build
 
 WORKDIR /app
 
 COPY package*.json ./
-
-RUN npm install -g @angular/cli
 RUN npm install
 
 COPY . .
+RUN npm run build -- --configuration production
 
-EXPOSE 4200
+# Etapa 2 — servidor
+FROM nginx:alpine
 
-CMD ["npm", "run", "start"]
+COPY --from=build /app/dist/tech-quiz-angular /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
