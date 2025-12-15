@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,7 +19,8 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private location: Location
   ) {}
 
   login(event: Event) {
@@ -37,5 +38,8 @@ export class LoginComponent {
         alert('Invalid credentials');
       }
     });
+  }
+  goBack() {
+    this.location.back();
   }
 }
