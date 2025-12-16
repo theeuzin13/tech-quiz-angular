@@ -21,9 +21,14 @@ export class QuizService {
   start(categoryId: string) {
     this._categoryId = categoryId;
 
+    this.questions.set([]);
+    this.currentIndex.set(0);
+    this.score.set(0);
+
     this.questionService.getQuestions().subscribe((questions: any[]) => {
-      
-      const filteredQuestions = questions.filter((q: any) => q.categoryId === categoryId);
+      const filteredQuestions = questions.filter(
+        (q: any) => q.category === categoryId
+      );
 
       if (filteredQuestions.length === 0) {
         this.router.navigate(['/quiz-empty']);
@@ -31,13 +36,16 @@ export class QuizService {
       }
 
       this.alternativeService.getAlternatives().subscribe(alternatives => {
-        
         const withAlternatives = filteredQuestions.map((q: any) => ({
           ...q,
-          alternatives: alternatives.filter((a: any) => a.questionId === q.id)
+          alternatives: alternatives.filter(
+            (a: any) => a.questionId === q.uuid
+          )
         }));
 
-        const hasNoAlternatives = withAlternatives.some(q => q.alternatives.length === 0);
+        const hasNoAlternatives = withAlternatives.some(
+          q => q.alternatives.length === 0
+        );
 
         if (hasNoAlternatives) {
           this.router.navigate(['/quiz-empty']);
@@ -45,8 +53,6 @@ export class QuizService {
         }
 
         this.questions.set(withAlternatives);
-        this.currentIndex.set(0);
-        this.score.set(0);
       });
     });
   }
@@ -76,6 +82,5 @@ export class QuizService {
     this.questions.set([]);
     this.currentIndex.set(0);
     this.score.set(0);
-    this._categoryId = '';
   }
 }

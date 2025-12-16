@@ -23,7 +23,12 @@ export class ResultComponent {
 
   playAgain() {
     const categoryId = this.quiz.categoryId();
-    this.quiz.reset();
+
+    if (!categoryId) {
+      this.router.navigate(['/']);
+      return;
+    }
+
     this.router.navigate([`/quiz/${categoryId}`]);
   }
 }
