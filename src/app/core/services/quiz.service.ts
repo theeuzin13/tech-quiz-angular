@@ -36,6 +36,8 @@ export class QuizService {
         return;
       }
 
+      this._categoryName = filteredQuestions[0].categoryName;
+
       this.alternativeService.getAlternatives().subscribe(alternatives => {
 
         const withAlternatives = filteredQuestions.map((q: any) => ({
