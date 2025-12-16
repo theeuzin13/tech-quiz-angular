@@ -26,8 +26,9 @@ export class QuizService {
     this.score.set(0);
 
     this.questionService.getQuestions().subscribe((questions: any[]) => {
+
       const filteredQuestions = questions.filter(
-        (q: any) => q.category === categoryId
+        (q: any) => q.categoryId === categoryId
       );
 
       if (filteredQuestions.length === 0) {
@@ -36,6 +37,7 @@ export class QuizService {
       }
 
       this.alternativeService.getAlternatives().subscribe(alternatives => {
+
         const withAlternatives = filteredQuestions.map((q: any) => ({
           ...q,
           alternatives: alternatives.filter(
