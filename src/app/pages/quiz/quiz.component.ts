@@ -18,12 +18,6 @@ export class QuizComponent {
   ) {
     const id = this.route.snapshot.paramMap.get('categoryId')!;
     this.quiz.start(id);
-
-    const questions = this.quiz.questions();
-
-    if (!questions || questions.length === 0) {
-      this.router.navigate(['/quiz-empty']);
-    }
   }
 
   chooseAlternative(correct: boolean) {

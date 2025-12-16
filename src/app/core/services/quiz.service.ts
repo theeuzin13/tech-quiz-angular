@@ -43,20 +43,20 @@ export class QuizService {
         const withAlternatives = filteredQuestions.map((q: any) => ({
           ...q,
           alternatives: alternatives.filter(
-            (a: any) => a.questionId === q.uuid
+            (a: any) => a.questionId === q.id
           )
         }));
 
-        const hasNoAlternatives = withAlternatives.some(
-          q => q.alternatives.length === 0
+        const validQuestions = withAlternatives.filter(
+          q => q.alternatives.length > 0
         );
 
-        if (hasNoAlternatives) {
+        if (validQuestions.length === 0) {
           this.router.navigate(['/quiz-empty']);
           return;
         }
 
-        this.questions.set(withAlternatives);
+        this.questions.set(validQuestions);
       });
     });
   }
